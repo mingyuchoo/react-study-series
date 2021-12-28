@@ -1,51 +1,46 @@
 import { useReactiveVar } from '@apollo/client';
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 
-import { setUsers, TUser } from './vars';
+import { setUsers, User } from './vars';
+type State = { mode: string; id: number; add: string; modify: string };
+type Action =
+  | { type: 'record/IDLE' }
+  | { type: 'record/MODIFY'; id: number; modify: string }
+  | { type: 'input/CHANGE'; name: string; value: string };
 
-type State = { mode: string; id: number };
-type Action = { type: 'READ' } | { type: 'MODIFY'; id: number };
+const initState: State = { mode: 'read', id: 0, add: '', modify: '' };
 
-const initState = { mode: 'read', id: 0 };
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'MODIFY':
-      return { mode: 'modify', id: action.id };
-    case 'READ':
-      return { mode: 'read', id: 0 };
-    default:
-      return state;
+    case 'record/MODIFY':
+      return { ...state, mode: 'modify', id: action.id, modify: action.modify };
+    case 'record/IDLE':
+      return { ...state, mode: 'read', id: 0 };
+    case 'input/CHANGE':
+      return { ...state, [action.name]: action.value };
   }
 }
 
 export default function App(): React.ReactElement {
-  const [add, setAdd] = useState('');
-  const [modify, setModify] = useState('');
-  const users = useReactiveVar<Array<TUser>>(setUsers);
+  const users = useReactiveVar<Array<User>>(setUsers);
   const [state, dispatch] = useReducer(reducer, initState);
 
-  function handleAddChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setAdd(event.target.value);
-  }
-  function handleModifyChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setModify(event.target.value);
+  function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    dispatch({ type: 'input/CHANGE', name: event.target.name, value: event.target.value });
   }
   function handleAdd() {
-    if (add === '') return;
-    const newUser = {
-      id: users.length + 1,
-      email: `${add}@email.com`,
-      name: add,
-      activated: false,
-    };
-    setUsers(users.concat(newUser));
-    setAdd('');
+    if (state.add === '') return;
+    const newUser = { id: users.length + 1, email: `${state.add}@email.com`, name: state.add, activated: false };
+    setUsers([newUser].concat(users));
+    dispatch({ type: 'input/CHANGE', name: 'add', value: '' });
+    dispatch({ type: 'record/IDLE' });
   }
   function handleModify() {
-    if (modify === '') return;
-    /// ADD SOME CODE HERE TO MODIFY DATA
-    setModify('');
-    dispatch({ type: 'READ' });
+    if (state.modify === '') return;
+    const newUser = { id: state.id, email: `${state.modify}@email.com`, name: state.modify, activated: false };
+    setUsers(users.map((element) => (element.id === state.id ? newUser : element)));
+    dispatch({ type: 'input/CHANGE', name: 'modify', value: '' });
+    dispatch({ type: 'record/IDLE' });
   }
   function handleActivate(id: number) {
     setUsers(users.map((element) => (element.id === id ? { ...element, activated: !element.activated } : element)));
@@ -56,21 +51,32 @@ export default function App(): React.ReactElement {
   return (
     <div>
       <p>
-        <input type={'text'} name={'name'} value={add} onChange={handleAddChange} onKeyPress={(event) => event.key === 'Enter' && handleAdd()} />
+        <input
+          type={'text'}
+          name={'add'}
+          value={state.add}
+          onChange={onInputChange}
+          onKeyPress={(event) => event.key === 'Enter' && handleAdd()}
+        />
         <button onClick={handleAdd}>add</button>
       </p>
       {users.map((element, index) => (
         <div key={index}>
           {state.mode === 'modify' && state.id === element.id ? (
             <div>
-              <input type={'text'} name={element.name} value={modify} onChange={handleModifyChange} />
-              <button onClick={() => handleModify()}>Save</button>
+              <input
+                type={'text'}
+                name={'modify'}
+                value={state.modify}
+                onChange={onInputChange}
+                onKeyPress={(event) => event.key === 'Enter' && handleModify()}
+              />
+              <button onClick={handleModify}>Save</button>
             </div>
           ) : (
             <div
               onClick={() => {
-                dispatch({ type: 'MODIFY', id: element.id });
-                setModify(element.name);
+                dispatch({ type: 'record/MODIFY', id: element.id, modify: element.name });
               }}
             >
               {element.name}
