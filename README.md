@@ -1,1 +1,1 @@
-# react-study-series
+# react-setup-series
