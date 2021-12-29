@@ -1,32 +1,23 @@
 import { useReactiveVar } from '@apollo/client';
-import React, { useReducer } from 'react';
+import React from 'react';
 
-import { setUsers, User } from './vars';
-type State = { mode: string; id: number; toAdd: string; toUpdate: string };
-type Action =
-  | { type: 'record/IDLE' }
-  | { type: 'record/UPDATE'; id: number; toUpdate: string }
-  | { type: 'input/CHANGE'; name: string; value: string };
-
-const initState: State = { mode: 'idle', id: 0, toAdd: '', toUpdate: '' };
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case 'record/IDLE':
-      return { ...state, mode: 'idle', id: 0 };
-    case 'record/UPDATE':
-      return { ...state, mode: 'update', id: action.id, toUpdate: action.toUpdate };
-    case 'input/CHANGE':
-      return { ...state, [action.name]: action.value };
-  }
-}
+import { setState, setUsers, State, User } from './vars';
 
 export default function App(): React.ReactElement {
   const users = useReactiveVar<Array<User>>(setUsers);
-  const [state, dispatch] = useReducer(reducer, initState);
+  const state = useReactiveVar<State>(setState);
 
   function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch({ type: 'input/CHANGE', name: event.target.name, value: event.target.value });
+    switch (event.target.name) {
+      case 'toAdd':
+        setState({ ...state, toAdd: event.target.value });
+        break;
+      case 'toUpdate':
+        setState({ ...state, toUpdate: event.target.value });
+        break;
+      default:
+        setState({ ...state });
+    }
   }
   function handleAdd() {
     if (state.toAdd === '') return;
@@ -37,8 +28,7 @@ export default function App(): React.ReactElement {
       activated: false,
     };
     setUsers([newUser].concat(users));
-    dispatch({ type: 'input/CHANGE', name: 'toAdd', value: '' });
-    dispatch({ type: 'record/IDLE' });
+    setState({ ...state, mode: 'idle', toAdd: '' });
   }
   function handleModify() {
     if (state.toUpdate === '') return;
@@ -49,8 +39,7 @@ export default function App(): React.ReactElement {
       activated: false,
     };
     setUsers(users.map((element) => (element.id === state.id ? newUser : element)));
-    dispatch({ type: 'input/CHANGE', name: 'toUpdate', value: '' });
-    dispatch({ type: 'record/IDLE' });
+    setState({ ...state, mode: 'idle', toUpdate: '' });
   }
   function handleActivate(id: number) {
     setUsers(users.map((element) => (element.id === id ? { ...element, activated: !element.activated } : element)));
@@ -86,7 +75,7 @@ export default function App(): React.ReactElement {
           ) : (
             <div
               onClick={() => {
-                dispatch({ type: 'record/UPDATE', id: element.id, toUpdate: element.name });
+                setState({ ...state, mode: 'update', id: element.id, toUpdate: element.name });
               }}
             >
               {element.name}
