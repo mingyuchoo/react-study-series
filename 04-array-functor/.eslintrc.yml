@@ -14,7 +14,7 @@ parserOptions:
     jsx: true
 settings:
   react:
-    version: latest
+    version: detect
 plugins:
   - '@typescript-eslint'
   - react

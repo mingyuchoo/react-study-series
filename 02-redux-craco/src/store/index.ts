@@ -1,7 +1,8 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import counterReducer from '@/slices/counter';
+
 import boardReducer from '@/slices/board';
+import counterReducer from '@/slices/counter';
 
 export const store = configureStore({ reducer: { counter: counterReducer, board: boardReducer } });
 

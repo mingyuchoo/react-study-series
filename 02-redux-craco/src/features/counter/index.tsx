@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { useAppSelector, useAppDispatch } from '@/store';
-import { decrease, increase, increaseByAmount, increaseAsync, increaseIfOdd, selectCount } from '@/slices/counter';
+import { decrease, increase, increaseAsync, increaseByAmount, increaseIfOdd, selectCount } from '@/slices/counter';
+import { useAppDispatch, useAppSelector } from '@/store';
 
 export default function Counter(): React.ReactElement {
   const count = useAppSelector(selectCount);
@@ -20,7 +20,7 @@ export default function Counter(): React.ReactElement {
       <div>
         <input value={increaseAmount} onChange={(e) => setIncrementAmount(e.target.value)} />
         <button onClick={() => dispatch(increaseByAmount(increaseValue))}>Add Amount</button>
-        <button onClick={() => dispatch(increaseAsync(increaseValue))}>Add Async</button>
+        <button onClick={() => void dispatch(increaseAsync(increaseValue))}>Add Async</button>
         <button onClick={() => dispatch(increaseIfOdd(increaseValue))}>Add If Odd</button>
       </div>
     </div>

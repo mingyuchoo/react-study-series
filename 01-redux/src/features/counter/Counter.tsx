@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { decrement, increment, incrementByAmount, incrementAsync, incrementIfOdd, selectCount } from './counterSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import styles from './Counter.module.css';
+import { decrement, increment, incrementAsync, incrementByAmount, incrementIfOdd, selectCount } from './counterSlice';
 
 export function Counter(): React.ReactElement {
   const count = useAppSelector(selectCount);
@@ -32,7 +32,7 @@ export function Counter(): React.ReactElement {
         <button className={styles.button} onClick={() => dispatch(incrementByAmount(incrementValue))}>
           Add Amount
         </button>
-        <button className={styles.asyncButton} onClick={() => dispatch(incrementAsync(incrementValue))}>
+        <button className={styles.asyncButton} onClick={() => void dispatch(incrementAsync(incrementValue))}>
           Add Async
         </button>
         <button className={styles.button} onClick={() => dispatch(incrementIfOdd(incrementValue))}>

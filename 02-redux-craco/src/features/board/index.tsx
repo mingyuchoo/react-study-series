@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useAppSelector } from '@/store';
 import { selectCount } from '@/slices/counter';
+import { useAppSelector } from '@/store';
 
 export default function Counter(): React.ReactElement {
   const count = useAppSelector(selectCount);

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState, AppThunk } from '@/store';
+
+import { AppThunk, RootState } from '@/store';
 
 export interface BoardState {
   value: number;

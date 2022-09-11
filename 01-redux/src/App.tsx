@@ -1,7 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
+
+import React from 'react';
+
+import { Counter } from './features/counter/Counter';
+import logo from './logo.svg';
 
 export default function App(): React.ReactElement {
   return (

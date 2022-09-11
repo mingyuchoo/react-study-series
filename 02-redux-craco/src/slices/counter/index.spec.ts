@@ -1,4 +1,4 @@
-import counterReducer, { CounterState, increase, decrease, increaseByAmount } from '@/slices/counter';
+import counterReducer, { CounterState, decrease, increase, increaseByAmount } from '@/slices/counter';
 
 describe('counter reducer', () => {
   const initialState: CounterState = {
