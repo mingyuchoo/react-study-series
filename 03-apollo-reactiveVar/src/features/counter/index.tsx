@@ -1,5 +1,5 @@
-import React from 'react';
 import { useReactiveVar } from '@apollo/client';
+import React from 'react';
 
 import { setCount } from '@/features/vars';
 
