@@ -76,8 +76,7 @@ export default function App(): React.ReactElement {
             <div
               onClick={() => {
                 setState({ ...state, mode: 'update', id: element.id, toUpdate: element.name });
-              }}
-            >
+              }}>
               {element.name}
             </div>
           )}
