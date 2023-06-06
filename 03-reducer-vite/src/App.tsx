@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react'
+import { useReducer } from 'react'
 import axios from 'axios'
 import './App.css'
 
@@ -72,8 +72,8 @@ function App() {
       </h1>
       <ul>
       { data.map((user, index) => (
-          <li key={user.id}>
-            {user.username}
+          <li key={index}>
+            {user.username} - {user.name}
           </li>
         ))
       }
