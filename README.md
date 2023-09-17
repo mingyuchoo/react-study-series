@@ -62,7 +62,48 @@ $ pnpm run dev
 - qwik
 - qwik-ts
 
+## How to use Tailwind CSS
+
+### Install Tailwind CSS
+
+```bash
+$ bun add -d tailwindcss postcss autoprefixer
+$ bunx tailwindcss init -p
+```
+
+### Configure your template paths
+
+In `tailwind.config.js`
+
+```javascript
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+### Add the Tailwind directives to `index.css` file
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+### Run application
+
+```bash
+$ bun run dev
+```
+
 ## References
 
 - <https://vitejs.dev/guide/>
-
+- <https://tailwindcss.com/docs/guides/vite>
