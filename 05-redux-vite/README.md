@@ -1,4 +1,4 @@
-# 03-redux-vite
+# README
 
 ## Prerequisites
 

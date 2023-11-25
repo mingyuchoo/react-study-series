@@ -4,8 +4,7 @@
   <a href="https://github.com/mingyuchoo/react-study-series/pulls"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/mingyuchoo/react-study-series?color=appveyor" /></a>
 </p>
 
-# react-study-series
-
+# README
 ## Prerequisites
 
 ```bash

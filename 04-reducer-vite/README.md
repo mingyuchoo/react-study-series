@@ -1,5 +1,4 @@
-# 03-reducer-vite
-
+# README
 
 ## How to create this project from template
 

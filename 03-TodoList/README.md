@@ -1,5 +1,4 @@
-# myapp
-
+# README
 ## How to create scaffold project
 
 ```bash
